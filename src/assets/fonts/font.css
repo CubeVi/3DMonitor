@@ -1,0 +1,42 @@
+@font-face {
+    font-family: 'dinBlack';
+    src: url("./DIN-BLACK.OTF");
+    font-weight: normal;  
+    font-style: normal;  
+}
+@font-face {
+    font-family: 'dinBold';
+    src: url("./DIN-BOLD.OTF");
+    font-weight: normal;  
+    font-style: normal;  
+}
+@font-face {
+    font-family: 'dinLight';
+    src: url("./DIN-LIGHT.OTF");
+    font-weight: normal;  
+    font-style: normal;  
+}
+@font-face {
+    font-family: 'dinMedium';
+    src: url("./DIN-MEDIUM.OTF");
+    font-weight: normal;  
+    font-style: normal;  
+}
+@font-face {
+    font-family: 'dinItalic';
+    src: url("./DIN-BLACKITALIC.OTF");
+    font-weight: normal;  
+    font-style: normal;  
+}
+@font-face {
+    font-family: 'dinItalicAlt';
+    src: url("./DIN-BLACKITALICALT.OTF");
+    font-weight: normal;  
+    font-style: normal;  
+}
+@font-face {
+    font-family: 'dinItalicExp';
+    src: url("./DIN-BLACKITALICEXP.OTF");
+    font-weight: normal;  
+    font-style: normal;  
+}

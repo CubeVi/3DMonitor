@@ -1,0 +1,114 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --el-text-color-placeholder: #719CB9 !important;
+}
+
+html,
+body,
+#app {
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+}
+
+html,
+body {
+    background: linear-gradient(180deg, #071523 0%, #061d2d 100%) !important;
+    color: #ffffff;
+    font-family: dinMedium;
+    font-weight: 500;
+}
+
+#app {
+    display: flex;
+    flex-direction: column;
+}
+
+#app>div {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.svg-icon {
+    color: #719cb9;
+    cursor: pointer;
+
+    &.disable {
+        color: #38607b;
+
+        &:hover {
+            color: #38607b;
+        }
+    }
+
+    &:hover {
+        color: #2fc6df;
+    }
+}
+
+img {
+    vertical-align: middle;
+}
+
+div,
+p,
+span {
+    color: #719cb9;
+}
+
+.normal {
+    color: #ffffff;
+}
+
+.highlight {
+    color: #2fc6df;
+}
+
+/* General scrollbar styles */
+::-webkit-scrollbar {
+    width: 2px;
+    /* Set scrollbar width to 5px */
+    background-color: transparent;
+}
+
+/* Scrollbar track (the area outside the thumb) styles */
+::-webkit-scrollbar-track {
+    border-radius: 1px;
+    /* Set border radius to 3px */
+    background-color: transparent;
+    /* Can be set to transparent or another background color */
+}
+
+/* Scrollbar thumb (the draggable part) normal state styles */
+::-webkit-scrollbar-thumb {
+    border-radius: 3px;
+    /* Set border radius to 3px */
+    background-color: #719cb9;
+    /* Set scrollbar thumb color */
+    transition: background-color 0.3s ease;
+    /* Add transition effect */
+}
+
+/* Scrollbar thumb hover state styles */
+::-webkit-scrollbar-thumb:hover {
+    background-color: #2fc6df;
+    /* Scrollbar thumb color when hovered */
+}
+
+.el-select__popper {
+    z-index: 99999 !important;
+}
+
+.el-select-dropdown__item {
+    padding: 0 5px !important;
+}
+
+.el-select-dropdown__item span {
+    color: #071523;
+}
