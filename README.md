@@ -6,9 +6,11 @@
 
 </h3>
 
+<p align="center">
+    👋 Join our  <a href="https://discord.gg/ZzEhKNJE8g" target="_blank">Discord</a> 
+</p>
 
-
-CubeVi [C1](https://cubevi.com/products/cube-c1) is a glasses-free holographic 3D display. One of the primary goals of this open-source project is to help developers understand how to implement light field rendering on the C1. The C1 uses a lenticular lens array that directs different views to the viewer's left and right eyes simultaneously, producing glasses-free 3D depth without any special eyewear. This project shows how to obtain the grating parameters from the CubeStage platform and how to interleave the views.
+CubeVi [C1](https://cubevi.com/products/cube-c1) is a glasses-free holographic 3D display. One of the primary goals of this open-source project is to help developers understand how to implement light field rendering on the C1. The C1 uses a lenticular lens array that directs different views to the viewer's left and right eyes simultaneously, producing glasses-free 3D depth without any special eyewear. This project shows how to obtain the grating parameters from the Cubestage or OpenstageAI platform and how to interleave the views.
 
 3DMonitor is an Electron + Vite + Vue 3 desktop application for Windows that renders dynamic, theme-based system dashboards and monitors CPU, GPU, memory, disk and network metrics in real time on the C1 display.
 
@@ -25,7 +27,7 @@ CubeVi [C1](https://cubevi.com/products/cube-c1) is a glasses-free holographic 3
 
 - Windows 10/11 64-bit
 - Node.js 18+ and npm 9+
-- CubeStage installed and running on the same machine
+- [Cubestage](https://cubevi.com/pages/download-page) (international / English) or [OpenstageAI](https://www.openstageai.com/download) (Chinese) installed and running on the same machine
 
 ## Quick Start
 
@@ -100,9 +102,11 @@ See [THEME-DEV.md](THEME-DEV.md) for full component examples and the complete ca
 
 ## How to Use
 
-1. Install [CubeStage](https://cubevi.com/pages/download-page) and log in.
+1. Install [Cubestage](https://cubevi.com/pages/download-page) (international / English) or [OpenstageAI](https://www.openstageai.com/download) (Chinese) and **log in**.
 
-![](./doc/images/cubestage.jpg)
+> **Note:** Throughout the rest of this document, **"platform"** refers to either CubeStage or OpenstageAI, whichever you have installed.
+
+![](./doc/images/Cubestage.jpg)
 
 2. Run the 3DMonitor app from source:
 
@@ -124,17 +128,17 @@ npm run dev
 
 ## Grating Parameters
 
-To render correctly, your application must interleave multiple camera views into a single output frame whose pixels are precisely aligned with the physical lens columns. This requires three grating parameters that describe the geometry of the lenticular grid. These values are retrieved at runtime from the **CubeStage** platform software via a local socket connection:
+To render correctly, your application must interleave multiple camera views into a single output frame whose pixels are precisely aligned with the physical lens columns. This requires three grating parameters that describe the geometry of the lenticular grid. These values are retrieved at runtime from the **platform** software via a named pipe connection:
 
 | Parameter | Description |
 |-----------|-------------|
 | **X0** | Horizontal origin offset of the lenticular grid (in subpixels). This is the most critical value and is adjusted per unit during calibration. |
 | **Interval** | Pitch of one lenticular lens in subpixels — i.e. how many output pixels wide each lens column is. |
-| **Slope** | Tilt angle of the lenticular lens array relative to the pixel grid. Slope is  the tangent of this angle. |
+| **Slope** | Tilt angle of the lenticular lens array relative to the pixel grid. Slope is the tangent of this angle. |
 
 ### How to Obtain Grating Parameters
 
-In `src/background.ts`, the socket response handler shows how the grating parameters are retrieved from the platform service:
+In `src/background.ts`, the named pipe response handler shows how the grating parameters are retrieved from the platform service:
 
 ```typescript
             log('---------->dataFromServer', respJson)
@@ -173,8 +177,8 @@ The same logic can be ported to any rendering pipeline (WebGL, Three.js, Babylon
 
 **End-to-end flow for a new app**
 
-1. Ensure CubeStage is running on the same Windows machine.
-2. Open a local socket connection to the server exposed by CubeStage.
+1. Ensure Cubestage or OpenstageAI is running on the same Windows machine.
+2. Open a named pipe connection to the **platform** service.
 3. Send a `getDeivice` request; the response includes `x0`, `interval` and `slope` inside `response_data.config`.
 4. Use those three values to interleave your rendered views before pushing the frame to the C1 display window.
 
@@ -182,17 +186,17 @@ See `src/background.ts` for the exact request/response handling used in this pro
 
 ## Light Field Calibration
 
-The lenticular lens grid is manufactured to tight tolerances, but small unit-to-unit variations in lens placement can cause the 3D effect to look misaligned or "ghosted" without fine-tuning. The C1 therefore supports per-unit calibration, performed entirely inside **CubeStage** — your application does not need to implement any calibration UI of its own.
+The lenticular lens grid is manufactured to tight tolerances, but small unit-to-unit variations in lens placement can cause the 3D effect to look misaligned or "ghosted" without fine-tuning. The C1 therefore supports per-unit calibration, performed entirely inside the **platform** — your application does not need to implement any calibration UI of its own.
 
 **What calibration adjusts**
 
-The primary calibration parameter is **X0** — the horizontal origin of the lenticular grid. When X0 is off by even a fraction of a pixel, the left-eye and right-eye views swap or blend incorrectly, degrading the 3D experience. The user adjusts X0 inside CubeStage until the depth effect looks sharp and comfortable, then saves the value to the device.
+The primary calibration parameter is **X0** — the horizontal origin of the lenticular grid. When X0 is off by even a fraction of a pixel, the left-eye and right-eye views swap or blend incorrectly, degrading the 3D experience. The user adjusts X0 inside the **platform** until the depth effect looks sharp and comfortable, then saves the value to the device.
 
 **What your app needs to do**
 
 Nothing extra. Once the user has calibrated their unit, the corrected X0 (along with the fixed Interval and Slope) is stored on the device and returned automatically to every application that requests device configuration. Simply read the three values at startup and use them directly in your interleaving shader or algorithm — the calibration is already baked in.
 
-> **Tip:** If a user reports that your app's 3D output looks wrong on their device, ask them to re-run calibration in CubeStage first. In most cases that resolves the issue without any code change on your side.
+> **Tip:** If a user reports that your app's 3D output looks wrong on their device, ask them to re-run calibration in the **platform** first. In most cases that resolves the issue without any code change on your side.
 
 ## Publish Your Own App
 
