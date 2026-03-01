@@ -20,5 +20,5 @@ export const getAppId = () => isOverseeBuild()?'3DMonitor.app.En':'3DMonitor.app
 
 
 export const ENV = ''
-const BASE_URL =  'https://app.cubevi.com' 
+const BASE_URL = isOverseeBuild() ? 'https://app.cubevi.com' : 'https://app.realplaybox.cn'
 export { BASE_URL, ver,BUILD_LANG }
